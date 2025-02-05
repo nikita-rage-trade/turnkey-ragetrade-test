@@ -11,6 +11,9 @@ importers:
       '@turnkey/sdk-react':
         specifier: ^2.0.4
         version: 2.0.4(@types/react@18.3.18)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)
+      '@turnkey/wallet-stamper':
+        specifier: ^1.0.2
+        version: 1.0.2(typescript@5.7.3)
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3172,7 +3175,7 @@ snapshots:
 
   bs58check@3.0.1:
     dependencies:
-      '@noble/hashes': 1.4.0
+      '@noble/hashes': 1.7.1
       bs58: 5.0.0
 
   buffer@6.0.3:
