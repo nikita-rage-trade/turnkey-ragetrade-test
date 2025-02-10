@@ -1,34 +1,82 @@
 "use client";
 
 import { Auth, useTurnkey } from "@turnkey/sdk-react";
-import { EthereumWallet } from "@turnkey/wallet-stamper";
 import { ComponentProps, useEffect, useState } from "react";
 
 export default function Home() {
-  const { turnkey, client } = useTurnkey();
+  const { turnkey, authIframeClient } = useTurnkey();
   const [user, setUser] = useState<any>(null);
+  const [suborgId, setSuborgId] = useState("");
+  const [wallets, setWallets] = useState<any[]>([]);
+  const [accounts, setAccounts] = useState<any>([]);
+  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
   useEffect(() => {
-    if (turnkey) {
-      turnkey.getCurrentUser().then((user) => {
-        setUser(user);
-      });
-    }
+    (async () => {
+      if (turnkey) {
+        const session = await turnkey.getReadWriteSession();
+
+        if (!session || Date.now() > session!.expiry) {
+          await turnkey.logoutUser();
+          return;
+        }
+
+        await authIframeClient?.injectCredentialBundle(
+          session.credentialBundle
+        );
+
+        const whoami = await authIframeClient?.getWhoami();
+        const suborgId = whoami?.organizationId;
+        setSuborgId(suborgId!);
+
+        console.log({ suborgId });
+
+        const userResponse = await authIframeClient!.getUser({
+          organizationId: suborgId!,
+          userId: whoami?.userId!
+        });
+
+        setUser(userResponse.user);
+
+        console.log({ userResponse });
+
+        const walletsResponse = await authIframeClient!.getWallets({
+          organizationId: suborgId!
+        });
+
+        setWallets(walletsResponse.wallets);
+
+        if (walletsResponse.wallets.length > 0) {
+          const defaultWalletId = walletsResponse.wallets[0].walletId;
+          setSelectedWallet(defaultWalletId);
+
+          const accountsResponse = await authIframeClient!.getWalletAccounts({
+            organizationId: suborgId!,
+            walletId: defaultWalletId
+          });
+          setAccounts(accountsResponse.accounts);
+          if (accountsResponse.accounts.length > 0) {
+            setSelectedAccount(accountsResponse.accounts[0].address);
+          }
+        }
+      }
+    })();
   }, [turnkey]);
 
-  console.log(client);
-
-  const getAccounts = async () => {
-    const client = await turnkey?.currentUserSession();
-
-    console.log({ user, client });
-  };
+  console.log(
+    user,
+    suborgId,
+    wallets,
+    accounts,
+    selectedAccount,
+    selectedWallet
+  );
 
   if (user) {
     return (
       <div>
         <h1>Welcome, {user.email}</h1>
-        <button onClick={getAccounts}>Get accounts</button>
         <button
           onClick={() => {
             turnkey?.logoutUser().then(() => {
@@ -56,8 +104,9 @@ export default function Home() {
       if (turnkey) {
         const user = await turnkey.getCurrentUser();
         const client = await turnkey?.currentUserSession();
+        const session = await turnkey?.getReadWriteSession();
 
-        console.log({ user, client });
+        console.log({ user, client, session });
         setUser(user);
       }
     },
