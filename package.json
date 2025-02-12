@@ -12,10 +12,12 @@
     "@turnkey/sdk-browser": "1.12.1",
     "@turnkey/sdk-react": "3.0.1",
     "@turnkey/sdk-server": "2.0.1",
+    "@turnkey/solana": "^1.0.11",
     "@turnkey/viem": "^0.6.10",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "viem": "^2.23.2"
   },
   "devDependencies": {
     "@types/node": "^20",

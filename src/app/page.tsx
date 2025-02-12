@@ -5,11 +5,14 @@ import {
   DEFAULT_SOLANA_ACCOUNTS
 } from "@turnkey/sdk-browser";
 import { Auth, useTurnkey } from "@turnkey/sdk-react";
+import { TurnkeySigner } from "@turnkey/solana";
 import { createAccount } from "@turnkey/viem";
 import { ComponentProps, useEffect, useState } from "react";
+import { Account, createWalletClient, http } from "viem";
+import { arbitrum, mainnet } from "viem/chains";
 
 export default function Home() {
-  const { turnkey, authIframeClient, walletClient, client } = useTurnkey();
+  const { turnkey, authIframeClient, client, walletClient } = useTurnkey();
   const [user, setUser] = useState<any>(null);
   const [suborgId, setSuborgId] = useState("");
   const [accounts, setAccounts] = useState<any[]>([]);
@@ -73,10 +76,9 @@ export default function Home() {
     })();
   }, [turnkey, authIframeClient]);
 
+  // Create Viem WalletClient for Ethereum account
   useEffect(() => {
     (async () => {
-      // createAccount()
-
       const ethereumAccount = accounts.find(
         (acc) => acc.addressFormat === "ADDRESS_FORMAT_ETHEREUM"
       );
@@ -88,7 +90,32 @@ export default function Home() {
           signWith: ethereumAccount.address
         });
 
-        console.log({ turnkeyAccount });
+        const walletClient = createWalletClient({
+          account: turnkeyAccount as Account,
+          chain: arbitrum,
+          transport: http()
+        });
+
+        console.log({
+          signedMessage: await walletClient.signMessage({ message: "tests" })
+        });
+        console.log({ turnkeyAccount, walletClient });
+      }
+    })();
+  }, [accounts, client, suborgId]);
+
+  // Create Solana Signer for Solana account
+  useEffect(() => {
+    (async () => {
+      const solanaAccount = accounts.find(
+        (acc) => acc.addressFormat === "ADDRESS_FORMAT_SOLANA"
+      );
+
+      if (solanaAccount && client) {
+        const turnkeySigner = new TurnkeySigner({
+          organizationId: suborgId,
+          client
+        });
       }
     })();
   }, [accounts, client, suborgId]);
@@ -106,6 +133,20 @@ export default function Home() {
     return (
       <div>
         <h1>Welcome, {user.email}</h1>
+
+        <div className="flex flex-col gap-2">
+          {accounts.map((account) => {
+            return (
+              <span
+                key={account.address}
+                className="p-2 border border-gray-300"
+              >
+                {account.address}
+              </span>
+            );
+          })}
+        </div>
+
         <button
           onClick={() => {
             turnkey?.logoutUser().then(() => {
