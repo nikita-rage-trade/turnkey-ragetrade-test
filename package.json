@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@turnkey/sdk-browser": "^1.11.1",
-    "@turnkey/sdk-react": "^2.0.3",
-    "@turnkey/sdk-server": "^1.7.2",
+    "@turnkey/sdk-browser": "1.12.0",
+    "@turnkey/sdk-react": "3.0.0",
+    "@turnkey/sdk-server": "2.0.0",
+    "@turnkey/viem": "^0.6.10",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"

@@ -9,14 +9,17 @@ importers:
   .:
     dependencies:
       '@turnkey/sdk-browser':
-        specifier: ^1.11.1
+        specifier: 1.12.0
         version: 1.12.0(typescript@5.7.3)
       '@turnkey/sdk-react':
-        specifier: ^2.0.3
-        version: 2.0.4(@types/react@18.3.18)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)
+        specifier: 3.0.0
+        version: 3.0.0(@types/react@18.3.18)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)
       '@turnkey/sdk-server':
-        specifier: ^1.7.2
-        version: 1.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 2.0.0
+        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@turnkey/viem':
+        specifier: ^0.6.10
+        version: 0.6.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)(viem@2.23.0(typescript@5.7.3))
       next:
         specifier: 14.2.5
         version: 14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -631,10 +634,6 @@ packages:
     resolution: {integrity: sha512-ptLgcpWVt34KTPx0omF2QLJrosW6I//clCJ4G2+yngYFCzrdR0yBchV/BOcfME67mK1v3MmauyXl9AAnQTmB4Q==}
     engines: {node: '>=18.0.0'}
 
-  '@turnkey/http@2.17.3':
-    resolution: {integrity: sha512-awyemf+sn7GQGJDVSVsTwlFmgA+cYrvrdaphH9+KBzRxrXi9fFjUircopQFCYaqwEPJQVpDs0evT2zLSqA16Xw==}
-    engines: {node: '>=16.0.0'}
-
   '@turnkey/http@2.18.0':
     resolution: {integrity: sha512-N2VvGKz6Q4xNlmEOvyu0AT14chbk+6NJQg5IKcUKHt7vb+kluS5W4HWGiTE3n25E30mUVzOwMOnYViio1c4tng==}
     engines: {node: '>=16.0.0'}
@@ -643,24 +642,26 @@ packages:
     resolution: {integrity: sha512-UWr7PWtlkA9oEt701zDHOW7OBDRp4BJS9rFe9Jymyz7x1VnCrKDzVOQ03TZavXBkdPZImtmHwPREqbsUEfkQYQ==}
     engines: {node: '>=18.0.0'}
 
-  '@turnkey/sdk-browser@1.11.2':
-    resolution: {integrity: sha512-D4OFd/GVBgjQq9wc0saAVVSxhPwEiDkUs517JhQ6EZ2RTFqzHdAeHPAg67miLMvN1fRe2hb4i9qyud1Acgo2vA==}
-    engines: {node: '>=18.0.0'}
-
   '@turnkey/sdk-browser@1.12.0':
     resolution: {integrity: sha512-LReORyNTzzll1zlRT4qJfUkr4VBlVPG5CxvRHEZVE29VMkfhV40Tg9fLYudkCzR2JXvzFk+RfoGttqLWcOqNWw==}
     engines: {node: '>=18.0.0'}
 
-  '@turnkey/sdk-react@2.0.4':
-    resolution: {integrity: sha512-EoTFnSZzCK605/vuAJ4ZJhKVJfHBrDW7QYCVHGvPzWKqlgdnlrjVVIdS9WpQ19jScLzHqizgM4ge+Bq0x9Lz9A==}
+  '@turnkey/sdk-react@3.0.0':
+    resolution: {integrity: sha512-xBDvqkHK1kg2dOD7eNveKiMy0I3PcmoJwekNtDOHNwpiHnKK/1XTmXcTJo414Py+bSGv/bnEOZLEvxJowVE+qw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@types/react': ^18.2.75
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@turnkey/sdk-server@1.7.3':
-    resolution: {integrity: sha512-QnaVAS7IqFrMxCRkqwQs6n4ZLOJRmzJpewB+5l7vwaczdecnnSy1biT0gcM5CGgKQSl2satYKVVft5QqAMgW8A==}
+  '@turnkey/sdk-server@2.0.0':
+    resolution: {integrity: sha512-hs6cEWxrlfvgUDNO2dtVzFAbK0KPtIosn9a6rpGQ562wJyUfAGmsxOaf/KcG/R8xtfEYqEZmDGk7KH1LKOQs1w==}
     engines: {node: '>=18.0.0'}
+
+  '@turnkey/viem@0.6.10':
+    resolution: {integrity: sha512-IFDzqN2fhiiuBWVy88WvitX3UGEAIQQl7KFFO3+L7yuVbEJPmHW79vJMVVGCZULvb82n9mnKr0UQGEGJtoqUDw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      viem: ^1.16.6 || ^2.1.1
 
   '@turnkey/wallet-stamper@1.0.2':
     resolution: {integrity: sha512-C4Lup8yN90Qn3HUTCZ0RiRwIWT1y9oqV5wqXmYaBPlaV52DC0N3LJl20Nh3vZu9Had79Rnz/OBm+ZWDAHi5SCg==}
@@ -954,6 +955,9 @@ packages:
 
   cross-fetch@3.2.0:
     resolution: {integrity: sha512-Q+xVJLoGOeIMXZmbUK4HYk+69cQH6LudR0Vu/pRm2YlU/hDV9CiS0gKUMaWY5f2NeUH9C1nV3bsTlCo0FsTV1Q==}
+
+  cross-fetch@4.1.0:
+    resolution: {integrity: sha512-uKm5PU+MHTootlWEY+mZ4vvXoCn4fLQxT9dSc1sXVMSFkINTJVN8cAQROpwcKm8bJ/c7rgZVIBWzH5T78sNZZw==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -2317,8 +2321,7 @@ packages:
 
 snapshots:
 
-  '@adraffy/ens-normalize@1.11.0':
-    optional: true
+  '@adraffy/ens-normalize@1.11.0': {}
 
   '@alloc/quick-lru@5.2.0': {}
 
@@ -2817,21 +2820,18 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.5': {}
 
-  '@scure/base@1.2.4':
-    optional: true
+  '@scure/base@1.2.4': {}
 
   '@scure/bip32@1.6.2':
     dependencies:
       '@noble/curves': 1.8.1
       '@noble/hashes': 1.7.1
       '@scure/base': 1.2.4
-    optional: true
 
   '@scure/bip39@1.5.4':
     dependencies:
       '@noble/hashes': 1.7.1
       '@scure/base': 1.2.4
-    optional: true
 
   '@swc/counter@0.1.3': {}
 
@@ -2861,15 +2861,6 @@ snapshots:
 
   '@turnkey/encoding@0.4.0': {}
 
-  '@turnkey/http@2.17.3':
-    dependencies:
-      '@turnkey/api-key-stamper': 0.4.4
-      '@turnkey/encoding': 0.4.0
-      '@turnkey/webauthn-stamper': 0.5.0
-      cross-fetch: 3.2.0
-    transitivePeerDependencies:
-      - encoding
-
   '@turnkey/http@2.18.0':
     dependencies:
       '@turnkey/api-key-stamper': 0.4.4
@@ -2880,27 +2871,6 @@ snapshots:
       - encoding
 
   '@turnkey/iframe-stamper@2.2.0': {}
-
-  '@turnkey/sdk-browser@1.11.2(typescript@5.7.3)':
-    dependencies:
-      '@turnkey/api-key-stamper': 0.4.4
-      '@turnkey/crypto': 2.3.0
-      '@turnkey/encoding': 0.4.0
-      '@turnkey/http': 2.17.3
-      '@turnkey/iframe-stamper': 2.2.0
-      '@turnkey/wallet-stamper': 1.0.2(typescript@5.7.3)
-      '@turnkey/webauthn-stamper': 0.5.0
-      bs58check: 3.0.1
-      buffer: 6.0.3
-      cross-fetch: 3.2.0
-      elliptic: 6.6.1
-      hpke-js: 1.6.1
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - typescript
-      - utf-8-validate
-      - zod
 
   '@turnkey/sdk-browser@1.12.0(typescript@5.7.3)':
     dependencies:
@@ -2923,7 +2893,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@turnkey/sdk-react@2.0.4(@types/react@18.3.18)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)':
+  '@turnkey/sdk-react@3.0.0(@types/react@18.3.18)(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
@@ -2933,8 +2903,8 @@ snapshots:
       '@noble/hashes': 1.4.0
       '@react-oauth/google': 0.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@turnkey/crypto': 2.3.0
-      '@turnkey/sdk-browser': 1.11.2(typescript@5.7.3)
-      '@turnkey/sdk-server': 1.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@turnkey/sdk-browser': 1.12.0(typescript@5.7.3)
+      '@turnkey/sdk-server': 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@turnkey/wallet-stamper': 1.0.2(typescript@5.7.3)
       '@types/react': 18.3.18
       libphonenumber-js: 1.11.19
@@ -2960,10 +2930,10 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@turnkey/sdk-server@1.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@turnkey/sdk-server@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@turnkey/api-key-stamper': 0.4.4
-      '@turnkey/http': 2.17.3
+      '@turnkey/http': 2.18.0
       buffer: 6.0.3
       cross-fetch: 3.2.0
       elliptic: 6.6.1
@@ -2978,6 +2948,29 @@ snapshots:
       - react
       - react-dom
       - sass
+
+  '@turnkey/viem@0.6.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.3)(viem@2.23.0(typescript@5.7.3))':
+    dependencies:
+      '@turnkey/api-key-stamper': 0.4.4
+      '@turnkey/http': 2.18.0
+      '@turnkey/sdk-browser': 1.12.0(typescript@5.7.3)
+      '@turnkey/sdk-server': 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      cross-fetch: 4.1.0
+      viem: 2.23.0(typescript@5.7.3)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@opentelemetry/api'
+      - '@playwright/test'
+      - babel-plugin-macros
+      - babel-plugin-react-compiler
+      - bufferutil
+      - encoding
+      - react
+      - react-dom
+      - sass
+      - typescript
+      - utf-8-validate
+      - zod
 
   '@turnkey/wallet-stamper@1.0.2(typescript@5.7.3)':
     dependencies:
@@ -3063,7 +3056,6 @@ snapshots:
   abitype@1.0.8(typescript@5.7.3):
     optionalDependencies:
       typescript: 5.7.3
-    optional: true
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
@@ -3310,6 +3302,12 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  cross-fetch@4.1.0:
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -3525,7 +3523,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.4(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -3556,7 +3554,7 @@ snapshots:
       is-glob: 4.0.3
       stable-hash: 0.0.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -3571,7 +3569,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -3713,8 +3711,7 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  eventemitter3@5.0.1:
-    optional: true
+  eventemitter3@5.0.1: {}
 
   fast-deep-equal@3.1.3: {}
 
@@ -4071,7 +4068,6 @@ snapshots:
   isows@1.0.6(ws@8.18.0):
     dependencies:
       ws: 8.18.0
-    optional: true
 
   iterator.prototype@1.1.5:
     dependencies:
@@ -4330,7 +4326,6 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - zod
-    optional: true
 
   p-limit@3.1.0:
     dependencies:
@@ -4890,7 +4885,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
       - zod
-    optional: true
 
   webidl-conversions@3.0.1: {}
 
@@ -4959,8 +4953,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.18.0:
-    optional: true
+  ws@8.18.0: {}
 
   yaml@1.10.2: {}
 

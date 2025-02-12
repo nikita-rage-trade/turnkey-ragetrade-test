@@ -1,20 +1,23 @@
 "use client";
 
+import {
+  DEFAULT_ETHEREUM_ACCOUNTS,
+  DEFAULT_SOLANA_ACCOUNTS
+} from "@turnkey/sdk-browser";
 import { Auth, useTurnkey } from "@turnkey/sdk-react";
+import { createAccount } from "@turnkey/viem";
 import { ComponentProps, useEffect, useState } from "react";
 
 export default function Home() {
-  const { turnkey, authIframeClient } = useTurnkey();
+  const { turnkey, authIframeClient, walletClient, client } = useTurnkey();
   const [user, setUser] = useState<any>(null);
   const [suborgId, setSuborgId] = useState("");
-  const [wallets, setWallets] = useState<any[]>([]);
-  const [accounts, setAccounts] = useState<any>([]);
+  const [accounts, setAccounts] = useState<any[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
-  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
-      if (turnkey) {
+      if (turnkey && authIframeClient) {
         const session = await turnkey.getReadWriteSession();
 
         if (!session || Date.now() > session!.expiry) {
@@ -22,56 +25,82 @@ export default function Home() {
           return;
         }
 
-        await authIframeClient?.injectCredentialBundle(
-          session.credentialBundle
-        );
+        await authIframeClient.injectCredentialBundle(session.credentialBundle);
 
-        const whoami = await authIframeClient?.getWhoami();
-        const suborgId = whoami?.organizationId;
-        setSuborgId(suborgId!);
+        const whoami = await authIframeClient.getWhoami();
 
-        console.log({ suborgId });
+        setSuborgId(whoami.organizationId);
 
-        const userResponse = await authIframeClient!.getUser({
-          organizationId: suborgId!,
-          userId: whoami?.userId!
-        });
+        const userResponse = await authIframeClient.getUser(whoami);
 
         setUser(userResponse.user);
 
-        console.log({ userResponse });
-
-        const walletsResponse = await authIframeClient!.getWallets({
-          organizationId: suborgId!
+        const walletsResponse = await authIframeClient.getWallets({
+          organizationId: whoami.organizationId
         });
 
-        setWallets(walletsResponse.wallets);
+        console.log({ walletsResponse });
 
         if (walletsResponse.wallets.length > 0) {
           const defaultWalletId = walletsResponse.wallets[0].walletId;
-          setSelectedWallet(defaultWalletId);
 
-          const accountsResponse = await authIframeClient!.getWalletAccounts({
-            organizationId: suborgId!,
+          const accountsResponse = await authIframeClient.getWalletAccounts({
+            organizationId: whoami.organizationId,
             walletId: defaultWalletId
           });
-          setAccounts(accountsResponse.accounts);
+
           if (accountsResponse.accounts.length > 0) {
+            setAccounts(accountsResponse.accounts);
             setSelectedAccount(accountsResponse.accounts[0].address);
+          } else {
+            await authIframeClient.createWalletAccounts({
+              walletId: defaultWalletId,
+              accounts: [
+                ...DEFAULT_ETHEREUM_ACCOUNTS,
+                ...DEFAULT_SOLANA_ACCOUNTS
+              ]
+            });
+
+            const accountsResponse = await authIframeClient.getWalletAccounts({
+              organizationId: whoami.organizationId,
+              walletId: defaultWalletId
+            });
+
+            setAccounts(accountsResponse.accounts);
           }
         }
       }
     })();
-  }, [turnkey]);
+  }, [turnkey, authIframeClient]);
 
-  console.log(
+  useEffect(() => {
+    (async () => {
+      // createAccount()
+
+      const ethereumAccount = accounts.find(
+        (acc) => acc.addressFormat === "ADDRESS_FORMAT_ETHEREUM"
+      );
+
+      if (ethereumAccount && client) {
+        const turnkeyAccount = await createAccount({
+          client: client as any,
+          organizationId: suborgId,
+          signWith: ethereumAccount.address
+        });
+
+        console.log({ turnkeyAccount });
+      }
+    })();
+  }, [accounts, client, suborgId]);
+
+  console.log({
+    authIframeClient,
     user,
     suborgId,
-    wallets,
     accounts,
     selectedAccount,
-    selectedWallet
-  );
+    client
+  });
 
   if (user) {
     return (
