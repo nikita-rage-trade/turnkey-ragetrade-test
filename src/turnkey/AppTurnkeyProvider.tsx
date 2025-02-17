@@ -8,11 +8,9 @@ interface AppTurnkeyProviderProps {
 
 const config = {
   apiBaseUrl: "https://api.turnkey.com",
-  defaultOrganizationId: process.env.NEXT_PUBLIC_ORGANIZATION_ID as string
+  defaultOrganizationId: process.env.NEXT_PUBLIC_ORGANIZATION_ID as string,
 };
 
-export default function AppTurnkeyProvider({
-  children
-}: AppTurnkeyProviderProps) {
+export function AppTurnkeyProvider({ children }: AppTurnkeyProviderProps) {
   return <TurnkeyProvider config={config}>{children}</TurnkeyProvider>;
 }
