@@ -27,9 +27,9 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [usdcAmount, setUsdcAmount] = useState("0");
   const [isTurnkeyOpen, setIsTurnkeyOpen] = useState(false);
-  const authTurnkey = useTurnkeyWallet();
+  const turnkeyWallet = useTurnkeyWallet();
 
-  if (authTurnkey.isLoading) {
+  if (turnkeyWallet.isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -44,7 +44,7 @@ export default function Home() {
     },
     configOrder: ["email", "passkey"],
     async onAuthSuccess() {
-      authTurnkey.connect();
+      turnkeyWallet.connect();
     },
     onError(errorMessage) {},
   };
@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <div className="p-8 border border-gray-200 rounded-lg w-[500px]">
-        {!authTurnkey.wallet && (
+        {!turnkeyWallet.wallet && (
           <div className="mb-6">
             <Button
               className={twMerge("w-full mb-4", isTurnkeyOpen && "bg-purple-100")}
@@ -186,9 +186,19 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="flex flex-col mt-6">
-              <Button onClick={() => {}}>Export Wallet</Button>
-            </div>
+            {turnkeyWallet.wallet?.ethereum && (
+              <div className="flex flex-col mt-6">
+                <Export
+                  walletId={turnkeyWallet.wallet.ethereum.walletId}
+                  onHandleExportSuccess={async () => {
+                    console.log("Export successful");
+                  }}
+                  onError={() => {
+                    console.log("Export failed");
+                  }}
+                />
+              </div>
+            )}
           </>
         ) : !isTurnkeyOpen ? (
           <>

@@ -22,12 +22,14 @@ type TurnkeyWalletContextValue = {
     disconnect: () => Promise<void>;
     organizationId: string;
     ethereum: {
+      walletId: string;
       address: EthereumAddress;
       getWalletClient: () => Promise<WalletClient | undefined>;
       chainId: number;
       setChainId: (chainId: number) => void;
     };
     solana: {
+      walletId: string;
       address: PublicKey;
       anchorWallet: AnchorWallet;
     };
@@ -40,10 +42,12 @@ const TurnkeyWalletContext = createContext<TurnkeyWalletContextValue>(null as an
 const TurnkeyWalletStore = create<{
   wallet: {
     solana: {
+      walletId: string;
       address: PublicKey;
       anchorWallet: AnchorWallet;
     };
     ethereum: {
+      walletId: string;
       address: EthereumAddress;
       getWalletClient: () => Promise<WalletClient | undefined>;
       chainId: number;
@@ -120,6 +124,7 @@ export function TurnkeyWalletProvider({ children }: TurnkeyWalletProviderProps) 
           TurnkeyWalletStore.setState({
             wallet: {
               ethereum: {
+                walletId: ethereumAccount.walletId,
                 address: ethereumAccount.address as EthereumAddress,
                 getWalletClient: async () => {
                   const ethereumWallet = TurnkeyWalletStore.getState().wallet?.ethereum;
@@ -146,6 +151,7 @@ export function TurnkeyWalletProvider({ children }: TurnkeyWalletProviderProps) 
                 chainId: arbitrum.id,
               },
               solana: {
+                walletId: solanaAccount.walletId,
                 address: anchorWallet.publicKey,
                 anchorWallet,
               },
