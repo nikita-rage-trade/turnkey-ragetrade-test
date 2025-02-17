@@ -1,36 +1,38 @@
 import { createContext, useContext, useCallback, ReactNode, useMemo } from "react";
-import { EthereumWallet, EthereumWalletStore } from "./types";
+import { EthereumWallet, EthereumWalletContextType } from "./types";
 import { BlockchainType } from "@/web3";
 import { create } from "zustand";
 
-const EthereumWalletContext = createContext<EthereumWalletStore | null>(null);
+const EthereumWalletContext = createContext<EthereumWalletContextType>(null as any);
 
-const WalletStore = create<{ wallet: EthereumWallet | null }>(() => ({
+const store = create<{ wallet: EthereumWallet | null }>(() => ({
   wallet: null,
 }));
 
-export function EthereumWalletProvider({ children }: { children: ReactNode }) {
-  const ethereumWallet = WalletStore((s) => s.wallet);
+const useStore = store;
 
-  const value: EthereumWalletStore = useMemo(
+export function EthereumWalletProvider({ children }: { children: ReactNode }) {
+  const ethereumWallet = useStore((s) => s.wallet);
+
+  const value: EthereumWalletContextType = useMemo(
     () => ({
       ethereumWallet,
       setEthereumWallet: async (props) => {
-        WalletStore.setState({
+        store.setState({
           wallet: {
             id: props.id,
             async switchChain(chainId) {
-              const actualWallet = WalletStore.getState().wallet;
+              const actualWallet = store.getState().wallet;
               if (actualWallet) {
                 await props.switchChain(chainId);
-                WalletStore.setState({
+                store.setState({
                   wallet: { ...actualWallet, chainId },
                 });
               }
             },
             async disconnect() {
               await props.disconnect();
-              WalletStore.setState({ wallet: null });
+              store.setState({ wallet: null });
             },
             getWalletClient: props.getWalletClient,
             address: props.address,

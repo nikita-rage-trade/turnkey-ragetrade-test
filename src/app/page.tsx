@@ -23,13 +23,17 @@ export default function Home() {
   const { wallets: solanaConnectors, connect: connectSolana, select } = useWallet();
   const { connectAsync } = useConnect();
   const { ethereumWallet } = useEthereumWallet();
-  const { solanaWallet: solWallet } = useSolanaWallet();
+  const { solanaWallet } = useSolanaWallet();
   const [message, setMessage] = useState("");
   const [usdcAmount, setUsdcAmount] = useState("0");
   const [isTurnkeyOpen, setIsTurnkeyOpen] = useState(false);
-  const turnkeyWallet = useTurnkeyWallet();
+  const {
+    wallet: turnkeyWallet,
+    isLoading: isTurnkeyWalletLoading,
+    connect: connectTurnkeyWallet,
+  } = useTurnkeyWallet();
 
-  if (turnkeyWallet.isLoading) {
+  if (isTurnkeyWalletLoading) {
     return <div>Loading...</div>;
   }
 
@@ -44,7 +48,7 @@ export default function Home() {
     },
     configOrder: ["email", "passkey"],
     async onAuthSuccess() {
-      turnkeyWallet.connect();
+      connectTurnkeyWallet();
     },
     onError(errorMessage) {},
   };
@@ -52,7 +56,7 @@ export default function Home() {
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <div className="p-8 border border-gray-200 rounded-lg w-[500px]">
-        {!turnkeyWallet.wallet && (
+        {!turnkeyWallet && (
           <div className="mb-6">
             <Button
               className={twMerge("w-full mb-4", isTurnkeyOpen && "bg-purple-100")}
@@ -186,10 +190,10 @@ export default function Home() {
               </Button>
             </div>
 
-            {turnkeyWallet.wallet?.ethereum && (
+            {turnkeyWallet && (
               <div className="flex flex-col mt-6">
                 <Export
-                  walletId={turnkeyWallet.wallet.ethereum.walletId}
+                  walletId={turnkeyWallet.ethereum.walletId}
                   onHandleExportSuccess={async () => {
                     console.log("Export successful");
                   }}
@@ -227,7 +231,7 @@ export default function Home() {
 
         <div className="my-4" />
 
-        {solWallet ? (
+        {solanaWallet ? (
           <>
             <h2 className="mb-2 text-2xl font-semibold">Solana Wallet</h2>
             <div className="flex gap-2 items-center justify-between">
@@ -236,14 +240,14 @@ export default function Home() {
                 <img src="https://api.dicebear.com/9.x/lorelei/svg" alt="User" className="size-6" />
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(solWallet.address.toString());
+                    navigator.clipboard.writeText(solanaWallet.address.toString());
                     alert("Copied to clipboard");
                   }}
                 >
-                  {truncateAddress(solWallet.address.toString())}
+                  {truncateAddress(solanaWallet.address.toString())}
                 </button>
               </div>
-              <Button variant="danger" onClick={() => solWallet.disconnect()}>
+              <Button variant="danger" onClick={() => solanaWallet.disconnect()}>
                 Disconnect
               </Button>
             </div>

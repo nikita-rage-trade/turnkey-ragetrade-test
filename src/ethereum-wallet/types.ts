@@ -26,4 +26,4 @@ export type EthereumWalletActions = {
   }): void;
 };
 
-export type EthereumWalletStore = EthereumWalletState & EthereumWalletActions;
+export type EthereumWalletContextType = EthereumWalletState & EthereumWalletActions;
